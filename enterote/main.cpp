@@ -5,10 +5,15 @@
 using namespace std;
 
 int main (){
-	Enterote a("12345678"), b("987654321"), c;
+	Enterote a("0"), b("1"), c;
 
-	c.add(a, b);
-	c.output();
+	// 0, 1, 1, 2, 3, 5, 8, ...
+	for (int i = 0; i < 1e4; i++){
+		a = b;
+		b = c;
+		c.add (a, b);
+		c.output();
+	}
 
 	return 0;
 }
