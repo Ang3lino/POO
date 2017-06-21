@@ -4,23 +4,26 @@
 
 #include <vector>
 #include <string>
+#include <stack>
 
 using namespace std;
-typedef long long int BINT;
 
 class Enterote{
 public:
 	Enterote (string = "0");
 	~Enterote ();
 	
-	void input (long long int);
+	void input (string);
 	void output ();
 	void add (Enterote, Enterote);
-	void substract (Enterote, Enterote);
+	void minus (Enterote, Enterote);
 
+	int digits ();
 	int getDigit (int);
 private:
 	vector <int> m;
 };
+
+void fillStacks (stack <int> &, stack <int> &, Enterote, Enterote);
 
 #endif
