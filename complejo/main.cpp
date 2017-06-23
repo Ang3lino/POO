@@ -5,23 +5,13 @@
 using std::cout;
 
 int main (){
-	Complex u(4, 1), v(5, 9), z;
+	Complex u, v(0,1), z(0, 0.5);
 
-	z.add (u, v);
-	z.show();
-
-	z = u + v;
-	z.show();
-
-	z = u - v;
-	z.show();
-
-	z = u * v;
-	cout << z << endl;
-
-	z = u / v;
-	z.show();
-
+	for (int k = 0; k < 999999; k++){
+		u = u + fcPow (z, k);
+		cout << u << "\t";
+	}
+	cout << "\n";
 
 	return 0;
 }

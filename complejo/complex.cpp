@@ -61,8 +61,18 @@ istream &operator>> (istream &input, Complex &z){
 	input >> z.im;
 
 	return input;																																																																																																																																																																																																																																																																																																																																																																									
+}
+
+bool Complex::operator== (const Complex &zri) const{
+	if (re == zri.re && im == zri.im)
+		return true;
+	return false;
 }	
 
+// Si se hace u != v, entonces this es el apuntador a u
+bool Complex::operator!= (const Complex &zri) const{
+	return !(*this == zri);
+}
 
 //	Funciones miembro	================================================
 double Complex::Re (){ return re; }
@@ -81,4 +91,39 @@ void Complex::set (double a, double b){
 void Complex::add (Complex a, Complex b){
 	 re = a.re + b.re;
 	 im = a.im + b.im;
+}
+
+Complex Complex::conjugate () const{
+	return Complex (re, -im);
+}
+
+// |z| = (z * z.conjugate()) ^ (1 / 2)
+double Complex::abs () const {
+	return sqrt (pow (re, 2) + pow (im, 2));
+}
+
+//	Funciones compa		===============================================
+
+Complex icPow (Complex z, int n){
+	Complex aux(1, 0);
+	
+	if (n >= 0)
+		for (int i = 0; i < n; i++)
+			aux = aux * z;
+	else if (n < 0){
+		Complex realUnity (1);
+		for (int i = 0; i < -n; i++)
+			aux = aux * z;
+		aux = realUnity / aux;
+	}
+
+	return aux;
+}
+
+Complex fcPow (Complex z, double n){
+	double r = z.abs();
+	double tetha = atan (z.im / z.re);
+	
+	return Complex (pow (r, n) * cos (n * tetha),
+					pow (r, n) * sin (n * tetha));
 }
