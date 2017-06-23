@@ -22,6 +22,7 @@ int Enterote::getDigit (int i){ return m[i]; }
 
 int Enterote::digits (){ return m.size(); }
 
+//	Para hacer pruebas
 void printStack (stack <int> s){
 	while (!s.empty()){
 		cout << s.top();
@@ -29,6 +30,9 @@ void printStack (stack <int> s){
 	}
 	cout << endl;
 }
+
+/*	Dados los argumentos mostrados, la funcion se encarga llenar la pila
+	p con el Enterote con mayor cantidad de digitos.	*/
 
 void fillStacks (stack <int> &p, stack <int> &q, Enterote a, Enterote b){
 	int n, i, j = 0;
@@ -55,12 +59,15 @@ void fillStacks (stack <int> &p, stack <int> &q, Enterote a, Enterote b){
 		}
 	}
 
-	//printStack (p);
-	//printStack (q);
-
 }
 
-// asumo que a >= b >= 0
+/*	Aqui ejecuto el algoritmo de la resta que se ensenia en algunas primarias
+	por ejemplo
+		23456
+	   -00349
+						asumo que a >= b >= 0
+	    ___5_
+		23107	*/
 
 void Enterote::minus (Enterote a, Enterote b){
 	stack <int> p, q, r;
@@ -68,8 +75,10 @@ void Enterote::minus (Enterote a, Enterote b){
 
 	fillStacks (p, q, a, b);
 	while (!p.empty()){
-		u = p.top(); p.pop();
-		v = q.top(); q.pop();
+		u = p.top();
+		p.pop();
+		v = q.top(); 
+		q.pop();
 		x = u - v;
 		if (x < 0){
 			q.top()++;
@@ -77,13 +86,14 @@ void Enterote::minus (Enterote a, Enterote b){
 		}
 		r.push(x);
 	}
-	x = 0;
+	m.clear(); 
 	while (!r.empty()){
-		m[x++] = r.top(); r.pop();
+		m.push_back(r.top());
+		r.pop();
 	}
 }
 
-/*	El numero con mas digitos sera guardado en la pila p por medio de fillStacks*/
+//	Funcion que ejecuta el algoritmo de la suma	que se ensenia en la primaria
 
 void Enterote::add (Enterote a, Enterote b){
 	stack <int> p, q, r;
@@ -91,8 +101,10 @@ void Enterote::add (Enterote a, Enterote b){
 	
 	fillStacks (p, q, a,  b);
 	while (!p.empty()){
-		u = p.top(); p.pop();
-		v = q.top(); q.pop();
+		u = p.top(); 
+		p.pop();
+		v = q.top(); 
+		q.pop();
 		acum = u + v + llevo;
 		if (acum >= 10){
 			llevo = 1;
@@ -112,7 +124,8 @@ void Enterote::add (Enterote a, Enterote b){
 
 void Enterote::input(string data){
 	for (int i = 0; i < data.size(); i++)
-		m[i] = data[i] - '0';
+		m[i] = data[i] - '0';	//	Forma practica de pasar un caracter 
+								//	numerico a entero
 }
 
 void Enterote::output (){

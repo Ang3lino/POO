@@ -5,16 +5,23 @@
 using std::cout;
 
 int main (){
-	Complex u, v, z;
+	Complex u(4, 1), v(5, 9), z;
 
-	u.show();
-	v.show();
-
-	u.set (2, 4);
-	v.set (-1, -3);
-	z.add(u, v);
-
+	z.add (u, v);
 	z.show();
+
+	z = u + v;
+	z.show();
+
+	z = u - v;
+	z.show();
+
+	z = u * v;
+	cout << z << endl;
+
+	z = u / v;
+	z.show();
+
 
 	return 0;
 }
