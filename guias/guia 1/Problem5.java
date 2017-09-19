@@ -51,13 +51,9 @@ public class Problem5 extends JFrame
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		try { 
-			for (int i = 0; i < tfnum.length; i++) 
-				arrayNum[i] = Double.valueOf(tfnum[i].getText());
-		} catch (Exception exception) {
-			lans.setText("Existen etiquetas vacias.");
-		}		
-		double max = -infty;
+	for (int i = 0; i < tfnum.length; i++) 
+		arrayNum[i] = Double.valueOf(tfnum[i].getText());
+	double max = -infty;
         int pos = 0;
         for (int i = 0; i < tfnum.length; i++) {
             if (arrayNum[i] > max) {
