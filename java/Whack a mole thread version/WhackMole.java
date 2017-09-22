@@ -8,71 +8,76 @@ public class WhackMole extends JFrame implements Runnable {
     
     private JPanel jpscore, jpboard;
     private Label lscore, ltitle, ltime;
-    static private int score, time, rows = 6, columns = 7;
+    private int score, time = 60, rows = 6, columns = 8;
     private WholeButton whole[][] = new WholeButton[rows][columns];
-    private Thread thread[] = new Thread[2];
+    private Thread thread[] = new Thread[4];
     private Container c;
-
-    static public void setScore (int newScore) {
-        score = newScore;
-    }
-
-    static public int getScore () {
-        return score;
-    }
-
+   
     public static void main(String[] args) {
         WhackMole game = new WhackMole();
+    }
+
+    private void jeteate(int n) {
+        try {
+            Thread.sleep(n * 1000);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
     }
 
     public WhackMole() {
         super("Whack a mole");
         c = getContentPane();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        time = 60;
-        initWholes();
         c.setLayout(new BorderLayout());
         jpscore = createNorth();
         c.add(jpscore, BorderLayout.NORTH);
-        for (int rep = 0; rep < 10; rep++) {
-            process();
-            try { Thread.sleep(5000); } catch(Exception ex) { }
-        }
-        /*
-        for (int i = 0; i < thread.length; i++)
-            thread[i] = new Thread(this);
+        initWholes();
+        JPanel pcenter = createCenter();
+        c.add(pcenter, BorderLayout.CENTER);
+        pack();
+        setVisible(true);
+        for (int k = 0; k < thread.length - 1; k++)
+            thread[k] = new Thread(this);
+        thread[thread.length - 1] = new Thread(new TimeSpender());
         for (int i = 0; i < thread.length; i++)
             thread[i].start();
-        */
     }
 
     private void process() {
-        Queue<Complex> pairs = new LinkedList<Complex>();
-        createWholes(pairs);
+        swapWholes();
         JPanel pcenter = createCenter();
         c.add(pcenter, BorderLayout.CENTER);
+        pack();
         setVisible(true);
+    }
+
+    private JPanel createCenter() {
+        jpboard = new JPanel(new GridLayout(rows, columns));
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                jpboard.add(whole[i][j]);
+        return jpboard;
+    }
+
+    class TimeSpender implements Runnable {
+        public void run() {
+            while (--time >= 0) {
+                jeteate(1);
+                ltime.setText("Time: "+time);
+            }
+            ltitle.setText("Fin del juego");
+            jeteate(5);
+            System.exit(0);
+        }
     }
 
     public void run() {
         Random gen = new Random();
-        Queue<Complex> pairs = new LinkedList<Complex>();
-        createWholes(pairs);
-        jpboard = createCenter();
-        c.add(jpboard, BorderLayout.CENTER);
-        pack();
-        setVisible(true);
-        try {
-            Thread.sleep(1000 * gen.nextInt(10));
-        } catch(Exception e) {
-            System.out.println(e);  
+        while (time >= 0) {
+            jeteate(gen.nextInt(3) * 1000);
+            swapWholes();
         }
-        cleanWholes(pairs);
-        jpboard = createCenter();
-        c.add(jpboard, BorderLayout.CENTER);
-        pack();
-        setVisible(true);
-        // ltime.setText("Time: "+(time--)); // where should i put this?
     }
 
     private void initWholes() {
@@ -81,29 +86,11 @@ public class WhackMole extends JFrame implements Runnable {
                 whole[i][j] = new WholeButton();
     }
 
-    private void createWholes(Queue<Complex> pair) {
+    private void swapWholes() {
         Random gen = new Random();
-        Complex z = new Complex();
-        ArrayList<Integer> x = new ArrayList<Integer>(), 
-            y = new ArrayList<Integer>();
-        final int amount = 3;
-        for (int i = 0; i < amount; i++) {
-            x.add(gen.nextInt(rows));
-            y.add(gen.nextInt(columns));
-        }
-        for (int i = 0; i < amount; i++) {
-            z.setValues(x.get(i), y.get(i));
-            pair.add(z);
-            whole[z.re()][z.im()].changeStatus();
-        }
-    }
-
-    private void cleanWholes (Queue<Complex> pair) {
-        Complex z = new Complex();
-        while (!pair.isEmpty()) {
-            z = pair.remove();
-            whole[z.re()][z.im()].changeStatus();
-        }
+        final int amount = 2;
+        for (int i = 0; i < amount; i++) 
+            whole[gen.nextInt(rows)][gen.nextInt(columns)].changeStatus();
     }
 
     private JPanel createNorth() {
@@ -117,19 +104,58 @@ public class WhackMole extends JFrame implements Runnable {
         return jpscore;
     }
 
-    private JPanel createCenter() {
-        jpboard = new JPanel(new GridLayout(rows, columns));
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++)
-                jpboard.add(whole[i][j]);
-        return jpboard;
-    }
+    class WholeButton extends JButton {
+        ImageIcon imglive, imgdead;
+        boolean itsAlive = false;
+        byte stat;
+        Random gen = new Random();
 
-    class AddScoreHandler implements ActionListener {
-        public void actionPerformed (ActionEvent e) {
-            score += 10;
-            lscore.setText("Score: "+score);
+        // 0 <= Random.nextInt(n) < n
+        private String randomPath() {
+            return new String("img"+gen.nextInt(2)+".jpg"); 
         }
-    }
 
-}
+        public WholeButton() {
+            imglive = new ImageIcon(randomPath());
+            imgdead = new ImageIcon("dead.jpg"); 
+            if (gen.nextInt(3) == 0) {
+                addActionListener(new Mole());
+                itsAlive = true; 
+                setIcon(imglive);
+            } else {
+                addActionListener(new Nothing());
+                itsAlive = false;
+                setIcon(null);
+            }
+        }
+
+        public void changeStatus() {
+            if (itsAlive){ 
+                itsAlive = false;
+                setIcon(null);
+                addActionListener(new Nothing());
+            } else {
+                itsAlive = true;
+                setIcon(imglive);
+                addActionListener(new Mole());
+            }
+        }
+
+        class Mole implements ActionListener {
+            public void actionPerformed(ActionEvent ae) {
+                setIcon(imgdead);
+                setVisible(true);
+                score += 10;
+                lscore.setText(String.valueOf("Score"+score));
+                try { Thread.sleep(1000); } catch (Exception ex) { }
+                changeStatus();
+            }
+        }
+
+        class Nothing implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                // void...
+            }
+        }
+    } 
+} 
