@@ -1,6 +1,9 @@
 
 all: WhackMole.java
-	javac -g WhackMole.java Complex.java 
+	javac -g WhackMole.java   
 
 run: 
-	javac -g WhackMole.java Complex.java && java WhackMole
+	javac -g WhackMole.java && java WhackMole
+
+clean:
+	rm *.class

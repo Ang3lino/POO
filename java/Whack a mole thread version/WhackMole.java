@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class WhackMole extends JFrame implements Runnable {
+public class WhackMole extends JFrame {
     
     private JPanel jpscore, jpboard;
     private Label lscore, ltitle, ltime;
@@ -37,19 +37,11 @@ public class WhackMole extends JFrame implements Runnable {
         c.add(pcenter, BorderLayout.CENTER);
         pack();
         setVisible(true);
-        for (int k = 0; k < thread.length - 1; k++)
-            thread[k] = new Thread(this);
-        thread[thread.length - 1] = new Thread(new TimeSpender());
+        thread[0] = new Thread(new TimeSpender());
+        for (int k = 1; k < thread.length; k++)
+            thread[k] = new Thread(new Estambre());
         for (int i = 0; i < thread.length; i++)
             thread[i].start();
-    }
-
-    private void process() {
-        swapWholes();
-        JPanel pcenter = createCenter();
-        c.add(pcenter, BorderLayout.CENTER);
-        pack();
-        setVisible(true);
     }
 
     private JPanel createCenter() {
@@ -72,11 +64,13 @@ public class WhackMole extends JFrame implements Runnable {
         }
     }
 
-    public void run() {
-        Random gen = new Random();
-        while (time >= 0) {
-            jeteate(gen.nextInt(3) * 1000);
-            swapWholes();
+    class Estambre implements Runnable {
+        public void run() {
+            Random gen = new Random();
+            while (time >= 0) {
+                jeteate(gen.nextInt(3));
+                swapWholes();
+            }
         }
     }
 
@@ -88,7 +82,7 @@ public class WhackMole extends JFrame implements Runnable {
 
     private void swapWholes() {
         Random gen = new Random();
-        final int amount = 2;
+        final int amount = 4;
         for (int i = 0; i < amount; i++) 
             whole[gen.nextInt(rows)][gen.nextInt(columns)].changeStatus();
     }
@@ -105,9 +99,8 @@ public class WhackMole extends JFrame implements Runnable {
     }
 
     class WholeButton extends JButton {
-        ImageIcon imglive, imgdead;
+        ImageIcon imglive, imgdead, imgfail;
         boolean itsAlive = false;
-        byte stat;
         Random gen = new Random();
 
         // 0 <= Random.nextInt(n) < n
@@ -118,6 +111,7 @@ public class WhackMole extends JFrame implements Runnable {
         public WholeButton() {
             imglive = new ImageIcon(randomPath());
             imgdead = new ImageIcon("dead.jpg"); 
+            imgfail = new ImageIcon("trollDog.gif");
             if (gen.nextInt(3) == 0) {
                 addActionListener(new Mole());
                 itsAlive = true; 
@@ -144,17 +138,18 @@ public class WhackMole extends JFrame implements Runnable {
         class Mole implements ActionListener {
             public void actionPerformed(ActionEvent ae) {
                 setIcon(imgdead);
-                setVisible(true);
                 score += 10;
-                lscore.setText(String.valueOf("Score"+score));
-                try { Thread.sleep(1000); } catch (Exception ex) { }
+                lscore.setText(String.valueOf("Score: "+score));
+                // try { Thread.sleep(1000); } catch (Exception ex) { }
                 changeStatus();
             }
         }
 
         class Nothing implements ActionListener {
             public void actionPerformed(ActionEvent e) {
-                // void...
+                setIcon(imgfail);
+                score -= 10;
+                lscore.setText(String.valueOf("Score: "+score));
             }
         }
     } 
