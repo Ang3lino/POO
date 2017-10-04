@@ -1,0 +1,22 @@
+
+Como instalar java3d y no morir en el intento
+
+Windows
+
+Buscar en Google install java3d api y nos vamos al sitio oficial de Oracle y descargamos
+la version de Windows amd64 en caso de que la arquitectura sea de 64 bits o i586 para 
+32 bits y corremos el ejecutable.
+
+Ahora nos vamos a program files/Java/Java3D/lib en este directorio hay tres archivos .jar
+los cuales los tendremos que copiar en la ruta donde se desee crear una aplicacion en 3d,
+despues vamos a Java3D/bin y copiamos el unico archivo y lo pegamos a System32 y listo
+podremos hacer uso de los comandos
+    
+    para compilar
+	javac -cp .;j3dcore.jar;j3dutils.jar;vecmath.jar $(NAME).java
+    
+    para correr la aplicacion 
+    java -cp .;j3dcore.jar;j3dutils.jar;vecmath.jar $(NAME)
+
+Ubuntu
+
