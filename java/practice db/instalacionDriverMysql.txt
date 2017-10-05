@@ -1,0 +1,32 @@
+
+Windows
+    Descargar Connector/j de el sitio oficial MySQL (Se probo con la version .zip)
+        https://dev.mysql.com/downloads/connector/j/3.0.html
+    
+    Basandome en este tutorial
+        https://www.youtube.com/watch?v=PY14Ily_-vI
+
+    Basandonos en el tutorial, una vez descargado el archivo y descomprimido, hacemos
+    nos vamos a la carpeta mysql... y copiamos el archivo con extension .jar a 
+    C:\Program Files\Java\jdk1.8.0_144\jre\lib\ext
+
+    Ahora copiamos 
+    C:\Program Files\Java\jdk1.8.0_144\jre\lib\ext\mysql-connector-java-3.0.17-ga-bin.jar 
+    
+    Abrimos control system > system properties > enviroment variables 
+    En el cuadro de dialogo SUPERIOR hacemos clic en new
+        var. name: CLASSPATH
+        var. value: C:\Program Files\Java\jdk1.8.0_144\jre\lib\ext\mysql-connector-java-3.0.17-ga-bin.jar 
+    
+    le damos ok, y compilamos como 
+        javac Name.java 
+    y corremos 
+        java Name 
+    
+    Nada de comandos raros ni toda la cosa :D
+
+    Problemas aparecidos y como solucionarlos
+        Error: Registry key 'Software\JavaSoft\Java Runtime Environment'\CurrentVersion'
+        has value '1.8', but '1.7' is required.
+            Borra java.exe, javaw.exe y javaws.exe de windows\system32 y windows\syswow64
+            (Se borrara de syswow64 si nuestra arquitectura es de 64 bits)
