@@ -1,6 +1,6 @@
 
 name = PetsDB
 all: $(name).java
-	javac -cp .;mysqlicon.jar $(name).java 
+	javac -cp .;mysqlcon.jar $(name).java 
 run: 
-	java -cp .;mysqlicon.jar $(name)
+	java -cp .;mysqlcon.jar $(name)
