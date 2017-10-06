@@ -8,6 +8,7 @@ public class PetsGUI extends JFrame {
     private LinkedList<JLabel> lattributes = new LinkedList<>();
     private LinkedList<JTextField> tfields = new LinkedList<>();
     private LinkedList<JButton> boptions = new LinkedList<>();
+    private PetsDB db;
 
     public PetsGUI() {
         super("Los perros y las perras");
@@ -40,15 +41,28 @@ public class PetsGUI extends JFrame {
             tfields.add(new JTextField());
         boptions.add(new JButton("Conectar"));
         boptions.add(new JButton("Insertar"));
-        //boptions.get(0).addActionListener(new ConnectHandle());
-        //boptions.get(1).addActionListener(new InsertHandle());
+        boptions.get(0).addActionListener(new ConnectHandle());
+        boptions.get(1).addActionListener(new InsertHandle());
     }
 
-    /*
-    class ConnectHandle implements ActionListener {
-        public void actionPerformed ()
+    class InsertHandle implements ActionListener{
+        public void actionPerformed (ActionEvent ae) {
+            LinkedList<Object> values = new LinkedList<>();
+            for (JTextField jtf: tfields)
+                values.add(jtf.getText());
+            try {
+                db.insertValues(values);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+        }
     }
-    */
+
+    class ConnectHandle implements ActionListener {
+        public void actionPerformed (ActionEvent ae) {
+            db = new PetsDB();
+        }
+    }
 
     private JPanel createGraphicTable() {
         JPanel p = new JPanel();
