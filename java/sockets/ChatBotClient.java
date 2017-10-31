@@ -11,13 +11,10 @@ public class ChatBotClient extends JFrame implements ActionListener {
     ObjectInputStream ois = null;
     JTextField tfask = new JTextField(20);
     JButton bask = new JButton("Pregunta!");
-    JLabel lans = new JLabel(10);
+    JLabel lans = new JLabel();
 
     public ChatBotClient() throws Exception{
         super("ChatBot");
-        s = new Socket("localhost", 5050);
-        oos = new ObjectOutputStream(s.getOutputStream());
-        ois = new ObjectInputStream(s.getInputStream());
         Container c = getContentPane();
         bask.addActionListener(this);
         c.setLayout(new FlowLayout());
@@ -36,6 +33,9 @@ public class ChatBotClient extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == bask) {
             try {
+                s = new Socket("localhost", 5050);
+                oos = new ObjectOutputStream(s.getOutputStream());
+                ois = new ObjectInputStream(s.getInputStream());
                 oos.writeObject(tfask.getText());
                 lans.setText((String) ois.readObject());
             } catch (Exception ex) {
