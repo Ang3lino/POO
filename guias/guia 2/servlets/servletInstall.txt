@@ -1,0 +1,15 @@
+
+windows: 
+    
+Go to win->control panel->enviroment variables
+add a variable with name JAVA_HOME with value where's installed jdk then go to
+path->var's value n' type %JAVA_HOME%\bin
+
+Now download tomcat from its Official website, the version 9 may not work with java properly
+now unzip it n go to bin n execute the first startup file 
+from lib, copy servlet-api.jar n paste it paste it where u'd like to use it 
+
+
+
+
+
