@@ -1,11 +1,12 @@
 
-FILE = PetsGUI
+FILE = Main
 
 # Dependencias
-compile: classes $(FILE).java mysqlcon.jar
-	javac -cp .:mysqlcon.jar *.java -d classes/ # Ponemos los *.class en el directorio classes
+compile: classes $(FILE).java 
+	javac *.java -d classes
 run:
-	java -cp ./classes:mysqlcon.jar PetsGUI # Corremos el PetsGUI.class ubicado en classes
+	java -cp .\classes $(FILE) 
 classes: 
 	mkdir classes 
-
+clear:
+	del *.class

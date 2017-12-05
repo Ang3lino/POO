@@ -7,11 +7,19 @@ public class CircularList<E> extends LinkedList<E> {
         return capacity;
     }
 
+    public int getIndex() {
+        return index; 
+    }
+
     public void setIndex(int x) {
         if (x >= 0 && x < capacity)
             index = x;
         else      
             index = 0;
+    }
+
+    public E getCurrent() {
+        return this.get(index);
     }
 
     public E next() {
@@ -48,4 +56,7 @@ public class CircularList<E> extends LinkedList<E> {
             index = capacity - 1;
         return element;
     }
+    public boolean isEmpty(){
+        return get(0) == null;
+    }    
 }
