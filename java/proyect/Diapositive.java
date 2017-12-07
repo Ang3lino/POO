@@ -13,6 +13,7 @@ public class Diapositive extends JFrame {
 	throws Exception {
 		super("Diapositiva");
 		label = new JLabel();
+		//Configuracion del boton siguiente
 		nextBtn = new JButton("Siguiente");
 		nextBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -20,7 +21,7 @@ public class Diapositive extends JFrame {
 				container.add(label, BorderLayout.CENTER);
 			}
 		});
-
+		//Configuracion del boton anterior
 		previousBtn = new JButton("Anterior");
 		previousBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -28,7 +29,7 @@ public class Diapositive extends JFrame {
 				container.add(label, BorderLayout.CENTER);
 			}
 		});
-
+		
 		auto = new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -36,6 +37,8 @@ public class Diapositive extends JFrame {
 						label.setIcon(images.next().getImage());
 						add(label, BorderLayout.CENTER);
 						Thread.sleep(5000);
+						//images.next();
+						//images.previous();
 					}
 				} catch (Exception ex) {
 					ex.printStackTrace();

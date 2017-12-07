@@ -9,10 +9,18 @@ import javax.swing.*;
 public class ImageWindowBtn extends JButton {
     private ImageIcon image;
     private BufferedImage myPicture;
-    private String path;
+    private String path, description;
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private static double width = screenSize.getWidth(), 
                           height = screenSize.getHeight();
+
+    public void setDescription(String desc) {
+        description = desc;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     public ImageIcon getImage() {
         return image;
@@ -39,7 +47,7 @@ public class ImageWindowBtn extends JButton {
         myPicture = ImageIO.read(new File(path));
         image = new ImageIcon(myPicture);
         // Ajustamos la dimension de cada boton
-        setPreferredSize(new Dimension(x, y));
+       setPreferredSize(new Dimension(x, y));
         setIcon(image);
     }
 }
